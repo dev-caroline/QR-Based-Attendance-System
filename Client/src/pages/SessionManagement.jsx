@@ -36,7 +36,6 @@ const SessionManagement = () => {
             const response = await getCourses();
             setCourses(response.data);
         } catch (error) {
-            // Error fetching courses
         }
     };
 
@@ -47,7 +46,6 @@ const SessionManagement = () => {
             const response = await getSessions(status);
             setSessions(response.data);
         } catch (error) {
-            // Error fetching sessions
         } finally {
             setLoading(false);
         }

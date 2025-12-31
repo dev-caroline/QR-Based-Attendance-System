@@ -45,7 +45,6 @@ const Navbar = ({ sidebarOpen, toggleSidebar }) => {
                 await markNotificationAsRead(notification._id);
                 await fetchNotifications();
             } catch (error) {
-                // Error marking as read
             }
         }
     };
@@ -55,7 +54,6 @@ const Navbar = ({ sidebarOpen, toggleSidebar }) => {
             await markAllNotificationsAsRead();
             await fetchNotifications();
         } catch (error) {
-            // Error marking all as read
         }
     };
 

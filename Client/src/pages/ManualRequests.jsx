@@ -22,7 +22,6 @@ const ManualRequests = () => {
             const response = await getManualRequests(status);
             setRequests(response.data);
         } catch (error) {
-            // Error fetching requests
         } finally {
             setLoading(false);
         }

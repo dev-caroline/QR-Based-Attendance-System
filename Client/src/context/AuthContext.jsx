@@ -57,7 +57,6 @@ export const AuthProvider = ({ children }) => {
         try {
             setError(null);
             const response = await registerAPI(userData);
-            // Don't auto-login after registration
             return { success: true };
         } catch (error) {
             const message = error.response?.data?.message || 'Registration failed';

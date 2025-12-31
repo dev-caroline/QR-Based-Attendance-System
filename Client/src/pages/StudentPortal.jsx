@@ -31,7 +31,6 @@ const StudentPortal = () => {
             const response = await axios.get('http://localhost:3500/api/courses/public');
             setCourses(response.data.data || []);
         } catch (error) {
-            // Error fetching sessions
         }
     };
 

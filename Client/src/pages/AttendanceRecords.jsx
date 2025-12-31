@@ -31,7 +31,6 @@ const AttendanceRecords = () => {
                 setSelectedCourse(response.data[0]._id);
             }
         } catch (error) {
-            // Error fetching courses
         } finally {
             setLoading(false);
         }
@@ -44,7 +43,6 @@ const AttendanceRecords = () => {
             setStats(response.data.overall);
             setStudents(response.data.students);
         } catch (error) {
-            // Error fetching stats
         } finally {
             setLoading(false);
         }
