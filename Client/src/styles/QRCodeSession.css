@@ -1,0 +1,180 @@
+.qr-session-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+}
+
+.qr-close-button {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-close-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.qr-session-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 32px;
+    max-width: 36rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.qr-session-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.qr-session-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 8px;
+}
+
+.qr-session-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 16px;
+}
+
+.qr-session-date {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.qr-session-time,
+.qr-session-room {
+    font-size: 14px;
+    color: #718096;
+}
+
+.qr-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.qr-code-display {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 4px solid #f3f4f6;
+}
+
+.qr-countdown-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 16px 24px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 10px 15px -3px rgba(102, 126, 234, 0.3);
+}
+
+.qr-countdown-label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    opacity: 0.9;
+}
+
+.qr-countdown-time {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.qr-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    justify-content: center;
+}
+
+.qr-action-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.qr-action-button.primary {
+    background: #667eea;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
+}
+
+.qr-action-button.primary:hover {
+    background: #5568d3;
+    box-shadow: 0 6px 12px -1px rgba(102, 126, 234, 0.4);
+    transform: translateY(-2px);
+}
+
+.qr-action-button.secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.qr-action-button.secondary:hover {
+    background: #e5e7eb;
+}
+
+.qr-session-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.qr-session-footer p {
+    font-size: 13px;
+    color: #718096;
+}
+
+@media (max-width: 640px) {
+    .qr-session-card {
+        padding: 24px;
+    }
+
+    .qr-code-display {
+        padding: 16px;
+    }
+
+    .qr-countdown-time {
+        font-size: 36px;
+    }
+
+    .qr-actions {
+        flex-direction: column;
+    }
+}

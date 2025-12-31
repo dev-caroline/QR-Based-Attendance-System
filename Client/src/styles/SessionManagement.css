@@ -1,0 +1,359 @@
+.session-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.session-header {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.session-header-content h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1a202c;
+}
+
+.session-header-content p {
+    color: #718096;
+    margin-top: 4px;
+}
+
+.new-session-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #667eea;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.new-session-button:hover {
+    background: #5568d3;
+}
+
+.session-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.session-tab {
+    padding: 12px 24px;
+    font-weight: 500;
+    transition: all 0.3s;
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #718096;
+}
+
+.session-tab.active {
+    color: #667eea;
+    border-bottom: 2px solid #667eea;
+}
+
+.session-tab:hover {
+    color: #1a202c;
+}
+
+.sessions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+}
+
+@media (min-width: 1024px) {
+    .sessions-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1536px) {
+    .sessions-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.session-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    padding: 24px;
+    transition: box-shadow 0.3s;
+}
+
+.session-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.session-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #d1fae5;
+    color: #065f46;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.session-badge-live {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.session-badge-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.session-course-code {
+    font-size: 14px;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 8px;
+}
+
+.session-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a202c;
+    margin-bottom: 16px;
+}
+
+.session-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.session-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #718096;
+    font-size: 14px;
+}
+
+.session-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid #f3f4f6;
+}
+
+.session-attendees {
+    font-size: 14px;
+    color: #718096;
+}
+
+.view-qr-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #667eea;
+    font-weight: 500;
+    font-size: 14px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.view-qr-button:hover {
+    color: #5568d3;
+}
+
+.delete-session-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #fee;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0;
+}
+
+.delete-session-button:hover {
+    background: #fecaca;
+    border-color: #dc2626;
+}
+
+.session-stats {
+    font-weight: 600;
+    color: #1a202c;
+}
+
+/* Modal Styles */
+.session-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 16px;
+}
+
+.session-modal {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 28rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.session-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.session-modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a202c;
+}
+
+.session-modal-close {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.session-modal-close:hover {
+    background: #f3f4f6;
+    color: #1a202c;
+}
+
+.session-modal-form {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.session-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.session-form-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.session-form-input,
+.session-form-select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s;
+    background: #f9fafb;
+}
+
+.session-form-input:hover,
+.session-form-select:hover {
+    border-color: #d1d5db;
+    background: white;
+}
+
+.session-form-input:focus,
+.session-form-select:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.session-modal-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 16px;
+}
+
+.session-modal-button {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.session-modal-button-cancel {
+    background: #f3f4f6;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+}
+
+.session-modal-button-cancel:hover {
+    background: #e5e7eb;
+}
+
+.session-modal-button-submit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
+}
+
+.session-modal-button-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px -1px rgba(102, 126, 234, 0.4);
+}
+
+.session-modal-button-submit:active {
+    transform: translateY(0);
+}
