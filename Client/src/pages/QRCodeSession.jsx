@@ -27,7 +27,7 @@ const QRCodeSession = () => {
             const remainingSeconds = Math.max(0, Math.floor((expiresAt - now) / 1000));
             setCountdown(remainingSeconds);
         } catch (error) {
-            console.error('Error fetching session:', error);
+
             alert('Failed to load session');
             navigate('/sessions');
         } finally {
@@ -87,9 +87,7 @@ const QRCodeSession = () => {
     if (loading) {
         return (
             <div className="qr-session-page">
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                    <p>Loading session...</p>
-                </div>
+                <Loader />
             </div>
         );
     }

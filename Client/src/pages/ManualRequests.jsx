@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, Check, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getManualRequests, approveRequest, rejectRequest } from '../services/apiService';
+import Loader from '../components/Loader';
 import '../styles/ManualRequests.css';
 
 const ManualRequests = () => {
@@ -21,7 +22,7 @@ const ManualRequests = () => {
             const response = await getManualRequests(status);
             setRequests(response.data);
         } catch (error) {
-            console.error('Error fetching requests:', error);
+            // Error fetching requests
         } finally {
             setLoading(false);
         }
@@ -111,9 +112,7 @@ const ManualRequests = () => {
             </div>
 
             {loading ? (
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                    <p>Loading requests...</p>
-                </div>
+                <Loader />
             ) : filteredRequests.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '40px', background: 'white', borderRadius: '12px' }}>
                     <p>No requests found</p>

@@ -19,7 +19,6 @@ exports.getNotifications = async (req, res) => {
             unreadCount
         });
     } catch (error) {
-        console.error('Error fetching notifications:', error);
         res.status(500).json({
             success: false,
             message: 'Failed to fetch notifications'
@@ -50,7 +49,6 @@ exports.markAsRead = async (req, res) => {
             notification
         });
     } catch (error) {
-        console.error('Error marking notification as read:', error);
         res.status(500).json({
             success: false,
             message: 'Failed to mark notification as read'
@@ -71,7 +69,6 @@ exports.markAllAsRead = async (req, res) => {
             message: 'All notifications marked as read'
         });
     } catch (error) {
-        console.error('Error marking all as read:', error);
         res.status(500).json({
             success: false,
             message: 'Failed to mark all as read'
@@ -101,7 +98,6 @@ exports.deleteNotification = async (req, res) => {
             message: 'Notification deleted'
         });
     } catch (error) {
-        console.error('Error deleting notification:', error);
         res.status(500).json({
             success: false,
             message: 'Failed to delete notification'

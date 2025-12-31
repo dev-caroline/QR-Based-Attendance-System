@@ -138,7 +138,7 @@ exports.createManualRequest = async (req, res) => {
                 );
             }
         } catch (notifError) {
-            console.error('Error creating notification:', notifError);
+            // Notification failed
         }
 
         res.status(201).json({
@@ -203,7 +203,7 @@ exports.approveRequest = async (req, res) => {
                 'ManualRequest'
             );
         } catch (notifError) {
-            console.error('Error creating notification:', notifError);
+            // Notification failed
         }
 
         // Update request
@@ -233,7 +233,7 @@ exports.approveRequest = async (req, res) => {
                 'ManualRequest'
             );
         } catch (notifError) {
-            console.error('Error creating notification:', notifError);
+            // Notification failed
         }
         res.status(200).json({
             success: true,

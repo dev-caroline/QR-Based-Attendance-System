@@ -49,7 +49,6 @@ exports.register = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Register error:', error);
         res.status(500).json({
             success: false,
             message: error.message
@@ -101,7 +100,8 @@ exports.login = async (req, res) => {
                     id: user._id,
                     fullName: user.fullName,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    profileImage: user.profileImage
                 },
                 token
             }
@@ -128,7 +128,8 @@ exports.getMe = async (req, res) => {
                     id: user._id,
                     fullName: user.fullName,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    profileImage: user.profileImage
                 }
             }
         });
@@ -145,11 +146,16 @@ exports.getMe = async (req, res) => {
 // @access  Private
 exports.updateProfile = async (req, res) => {
     try {
-        const { fullName, email } = req.body;
+        const { fullName, email, profileImage } = req.body;
+
+        const updateData = { fullName, email };
+        if (profileImage !== undefined) {
+            updateData.profileImage = profileImage;
+        }
 
         const user = await User.findByIdAndUpdate(
             req.user.id,
-            { fullName, email },
+            updateData,
             { new: true, runValidators: true }
         );
 
@@ -161,7 +167,8 @@ exports.updateProfile = async (req, res) => {
                     id: user._id,
                     fullName: user.fullName,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    profileImage: user.profileImage
                 }
             }
         });

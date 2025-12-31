@@ -35,7 +35,7 @@ const Navbar = ({ sidebarOpen, toggleSidebar }) => {
             setNotifications(response.notifications);
             setUnreadCount(response.unreadCount);
         } catch (error) {
-            console.error('Error fetching notifications:', error);
+            // Error fetching notifications
         }
     };
 
@@ -45,7 +45,7 @@ const Navbar = ({ sidebarOpen, toggleSidebar }) => {
                 await markNotificationAsRead(notification._id);
                 await fetchNotifications();
             } catch (error) {
-                console.error('Error marking notification as read:', error);
+                // Error marking as read
             }
         }
     };
@@ -55,7 +55,7 @@ const Navbar = ({ sidebarOpen, toggleSidebar }) => {
             await markAllNotificationsAsRead();
             await fetchNotifications();
         } catch (error) {
-            console.error('Error marking all as read:', error);
+            // Error marking all as read
         }
     };
 

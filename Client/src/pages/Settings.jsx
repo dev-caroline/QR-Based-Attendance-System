@@ -13,7 +13,6 @@ const Settings = () => {
     const [activeTab, setActiveTab] = useState('profile');
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
-    const [profileImage, setProfileImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
 
     const [profile, setProfile] = useState({
@@ -25,11 +24,6 @@ const Settings = () => {
         current: '',
         new: '',
         confirm: ''
-    });
-
-    const [notifications, setNotifications] = useState({
-        sessionReminders: true,
-        manualRequests: true
     });
 
     useEffect(() => {
@@ -67,7 +61,11 @@ const Settings = () => {
         setSuccess('');
 
         try {
-            await updateProfile(profile);
+            const updateData = { ...profile };
+            if (imagePreview) {
+                updateData.profileImage = imagePreview;
+            }
+            await updateProfile(updateData);
             setSuccess('Profile updated successfully');
             setTimeout(() => setSuccess(''), 3000);
         } catch (error) {

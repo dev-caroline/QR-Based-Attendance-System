@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Clock } from 'lucide-react';
 import { getSession, markAttendance } from '../services/apiService';
+import Loader from '../components/Loader';
 import '../styles/StudentAttendance.css';
 
 const StudentAttendance = () => {
@@ -32,7 +33,6 @@ const StudentAttendance = () => {
                 setMessage('This session has expired and is no longer accepting attendance.');
             }
         } catch (error) {
-            console.error('Error fetching session:', error);
             setStatus('error');
             setMessage('Session not found or has been deleted.');
         } finally {
@@ -88,8 +88,7 @@ const StudentAttendance = () => {
         return (
             <div className="student-attendance-page">
                 <div className="attendance-card">
-                    <div className="loading-spinner"></div>
-                    <p>Loading session...</p>
+                    <Loader />
                 </div>
             </div>
         );

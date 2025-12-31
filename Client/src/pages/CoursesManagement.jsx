@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
-import { getCourses, createCourse, updateCourse, deleteCourse } from '../services/apiService';
-import '../styles/CoursesManagement.css';
+import { getCourses, createCourse, updateCourse, deleteCourse } from '../services/apiService';import Loader from '../components/Loader';import '../styles/CoursesManagement.css';
 
 const CoursesManagement = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -25,7 +24,6 @@ const CoursesManagement = () => {
             const response = await getCourses();
             setCourses(response.data);
         } catch (error) {
-            console.error('Error fetching courses:', error);
             setError('Failed to load courses');
         } finally {
             setLoading(false);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, Calendar, Users, UserCheck, UserX } from 'lucide-react';
 import { getCourses, getAttendanceStats } from '../services/apiService';
+import Loader from '../components/Loader';
 import '../styles/AttendanceRecords.css';
 
 const AttendanceRecords = () => {
@@ -30,7 +31,7 @@ const AttendanceRecords = () => {
                 setSelectedCourse(response.data[0]._id);
             }
         } catch (error) {
-            console.error('Error fetching courses:', error);
+            // Error fetching courses
         } finally {
             setLoading(false);
         }
@@ -43,7 +44,7 @@ const AttendanceRecords = () => {
             setStats(response.data.overall);
             setStudents(response.data.students);
         } catch (error) {
-            console.error('Error fetching stats:', error);
+            // Error fetching stats
         } finally {
             setLoading(false);
         }
@@ -61,9 +62,7 @@ const AttendanceRecords = () => {
     if (loading && courses.length === 0) {
         return (
             <div className="attendance-container">
-                <div style={{ padding: '40px', textAlign: 'center' }}>
-                    <p>Loading...</p>
-                </div>
+                <Loader />
             </div>
         );
     }

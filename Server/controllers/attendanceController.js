@@ -2,9 +2,6 @@ const Attendance = require('../models/Attendance');
 const Session = require('../models/Session');
 const Course = require('../models/Course');
 
-// @desc    Get attendance records
-// @route   GET /api/attendance
-// @access  Private
 exports.getAttendanceRecords = async (req, res) => {
     try {
         const { courseId, sessionId, date } = req.query;
@@ -59,18 +56,12 @@ exports.getAttendanceRecords = async (req, res) => {
     }
 };
 
-// @desc    Mark attendance via QR code
-// @route   POST /api/attendance/mark
-// @access  Public (but requires session validation)
 exports.markAttendance = async (req, res) => {
     try {
         const { sessionId, studentId } = req.body;
 
         // Get client IP address
-        const ipAddress = req.headers['x-forwarded-for']?.split(',')[0] || 
-                         req.connection.remoteAddress || 
-                         req.socket.remoteAddress ||
-                         req.ip;
+        const ipAddress = req.headers['x-forwarded-for']?.split(',')[0] || req.ip || 'unknown';
 
         // Get device info from user agent
         const deviceInfo = req.headers['user-agent'] || 'Unknown device';
@@ -160,9 +151,6 @@ exports.markAttendance = async (req, res) => {
     }
 };
 
-// @desc    Get attendance statistics for a course
-// @route   GET /api/attendance/stats/:courseId
-// @access  Private
 exports.getAttendanceStats = async (req, res) => {
     try {
         const { courseId } = req.params;

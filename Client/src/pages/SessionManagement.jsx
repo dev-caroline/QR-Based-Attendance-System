@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, Plus, X, Trash2 } from 'lucide-react';
 import { getCourses, getSessions, createSession, endSession, deleteSession } from '../services/apiService';
+import Loader from '../components/Loader';
 import '../styles/SessionManagement.css';
 
 const SessionManagement = () => {
@@ -35,7 +36,7 @@ const SessionManagement = () => {
             const response = await getCourses();
             setCourses(response.data);
         } catch (error) {
-            console.error('Error fetching courses:', error);
+            // Error fetching courses
         }
     };
 
@@ -46,7 +47,7 @@ const SessionManagement = () => {
             const response = await getSessions(status);
             setSessions(response.data);
         } catch (error) {
-            console.error('Error fetching sessions:', error);
+            // Error fetching sessions
         } finally {
             setLoading(false);
         }
