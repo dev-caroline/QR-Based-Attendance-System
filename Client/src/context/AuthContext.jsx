@@ -38,7 +38,9 @@ export const AuthProvider = ({ children }) => {
     const login = async (credentials) => {
         try {
             setError(null);
+            console.log('Attempting login with:', credentials.email);
             const response = await loginAPI(credentials);
+            console.log('Login response:', response);
             const { user, token } = response.data;
             
             localStorage.setItem('token', token);
@@ -47,6 +49,8 @@ export const AuthProvider = ({ children }) => {
             
             return { success: true };
         } catch (error) {
+            console.error('Login error:', error);
+            console.error('Error response:', error.response);
             const message = error.response?.data?.message || 'Login failed';
             setError(message);
             return { success: false, error: message };
