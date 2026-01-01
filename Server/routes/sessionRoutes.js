@@ -5,11 +5,15 @@ const {
     createSession,
     updateSession,
     deleteSession,
-    endSession
+    endSession,
+    getSessionToken
 } = require('../controllers/sessionController');
 const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
+
+// Public route for getting session token (for rotating QR codes)
+router.get('/:id/token', getSessionToken);
 
 // Public route
 router.get('/public/:courseId', async (req, res) => {

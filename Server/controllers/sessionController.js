@@ -1,6 +1,30 @@
 const Session = require('../models/Session');
 const Course = require('../models/Course');
 const Attendance = require('../models/Attendance');
+const crypto = require('crypto');
+
+// Helper function to generate time-based token (changes every 5 seconds)
+const generateTimeToken = (sessionId, timeWindow) => {
+    const secret = process.env.JWT_SECRET || 'your-secret-key';
+    const data = `${sessionId}-${timeWindow}`;
+    return crypto.createHmac('sha256', secret).update(data).digest('hex').substring(0, 16);
+};
+
+// Helper function to get current time window (5-second intervals)
+const getCurrentTimeWindow = () => {
+    return Math.floor(Date.now() / 5000);
+};
+
+// Helper function to validate token (accepts current and previous window for 5-second grace period)
+const validateTimeToken = (sessionId, token) => {
+    const currentWindow = getCurrentTimeWindow();
+    const previousWindow = currentWindow - 1;
+    
+    const currentToken = generateTimeToken(sessionId, currentWindow);
+    const previousToken = generateTimeToken(sessionId, previousWindow);
+    
+    return token === currentToken || token === previousToken;
+};
 
 // @desc    Get all sessions
 // @route   GET /api/sessions
@@ -238,3 +262,57 @@ exports.endSession = async (req, res) => {
         });
     }
 };
+
+// @desc    Get current rotating token for session
+// @route   GET /api/sessions/:id/token
+// @access  Public
+exports.getSessionToken = async (req, res) => {
+    try {
+        const session = await Session.findById(req.params.id);
+
+        if (!session) {
+            return res.status(404).json({
+                success: false,
+                message: 'Session not found'
+            });
+        }
+
+        // Check if session is active
+        if (session.status !== 'active') {
+            return res.status(400).json({
+                success: false,
+                message: 'Session is not active'
+            });
+        }
+
+        // Check if session has expired
+        if (new Date() > session.expiresAt) {
+            return res.status(400).json({
+                success: false,
+                message: 'Session has expired'
+            });
+        }
+
+        const currentWindow = getCurrentTimeWindow();
+        const token = generateTimeToken(session._id.toString(), currentWindow);
+
+        res.status(200).json({
+            success: true,
+            data: {
+                token,
+                timeWindow: currentWindow,
+                expiresIn: 5 // seconds
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+// Export helper functions for use in other controllers
+exports.validateTimeToken = validateTimeToken;
+exports.getCurrentTimeWindow = getCurrentTimeWindow;
+exports.generateTimeToken = generateTimeToken;

@@ -183,6 +183,14 @@ exports.approveRequest = async (req, res) => {
             });
         }
 
+        // Auto-enroll student in course if not already enrolled
+        const Course = require('../models/Course');
+        const course = await Course.findById(request.course);
+        if (course && !course.students.includes(request.student)) {
+            course.students.push(request.student);
+            await course.save();
+        }
+
         // Create attendance record
         const attendance = await Attendance.create({
             session: request.session._id,
@@ -191,20 +199,6 @@ exports.approveRequest = async (req, res) => {
             status: 'present',
             method: 'manual'
         });
-
-        // Create notification for student
-        try {
-            await createNotification(
-                request.student,
-                'manual_request',
-                'Attendance Request Approved',
-                `Your manual attendance request for ${populatedRequest.course.code} has been approved`,
-                request._id,
-                'ManualRequest'
-            );
-        } catch (notifError) {
-            // Notification failed
-        }
 
         // Update request
         request.status = 'approved';
@@ -222,19 +216,21 @@ exports.approveRequest = async (req, res) => {
             .populate('course', 'code name')
             .populate('session', 'sessionName date time')
             .populate('reviewedBy', 'fullName');
+        
         // Create notification for student
         try {
             await createNotification(
                 request.student,
                 'manual_request',
-                'Attendance Request Rejected',
-                `Your manual attendance request for ${populatedRequest.course.code} has been rejected`,
+                'Attendance Request Approved',
+                `Your manual attendance request for ${populatedRequest.course.code} has been approved`,
                 request._id,
                 'ManualRequest'
             );
         } catch (notifError) {
             // Notification failed
         }
+
         res.status(200).json({
             success: true,
             message: 'Request approved successfully',

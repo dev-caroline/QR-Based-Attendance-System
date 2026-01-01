@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Download, Share2, X } from 'lucide-react';
 import QRCode from 'react-qr-code';
 import { getSession } from '../services/apiService';
+import axios from 'axios';
+import Loader from '../components/Loader';
 import '../styles/QRCodeSession.css';
 
 const QRCodeSession = () => {
@@ -11,9 +13,40 @@ const QRCodeSession = () => {
     const [countdown, setCountdown] = useState(600); // 10 minutes in seconds
     const [session, setSession] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [currentToken, setCurrentToken] = useState('');
+    const [qrData, setQrData] = useState('');
+    const [qrRefreshCount, setQrRefreshCount] = useState(0);
 
     useEffect(() => {
         fetchSession();
+    }, [sessionId]);
+
+    // Fetch rotating token every 5 seconds
+    useEffect(() => {
+        const fetchToken = async () => {
+            try {
+                const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+                const response = await axios.get(`${API_URL}/sessions/${sessionId}/token`);
+                const token = response.data.data.token;
+                setCurrentToken(token);
+                setQrRefreshCount(prev => prev + 1);
+                
+                // Generate QR URL with sessionId and token
+                const baseUrl = window.location.origin;
+                const qrUrl = `${baseUrl}/session/${sessionId}/attendance?token=${token}`;
+                setQrData(qrUrl);
+            } catch (error) {
+                console.error('Failed to fetch token:', error);
+            }
+        };
+
+        // Fetch immediately
+        fetchToken();
+
+        // Then fetch every 5 seconds
+        const tokenInterval = setInterval(fetchToken, 5000);
+
+        return () => clearInterval(tokenInterval);
     }, [sessionId]);
 
     const fetchSession = async () => {
@@ -119,16 +152,28 @@ const QRCodeSession = () => {
 
                 <div className="qr-content-wrapper">
                     <div className="qr-code-display">
-                        <QRCode
-                            value={session.qrCode || `${window.location.origin}/session/${sessionId}/attendance`}
-                            size={240}
-                            level="H"
-                        />
+                        {qrData ? (
+                            <QRCode
+                                value={qrData}
+                                size={240}
+                                level="H"
+                            />
+                        ) : (
+                            <div style={{ width: 240, height: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f3f4f6' }}>
+                                <p>Loading QR Code...</p>
+                            </div>
+                        )}
                     </div>
 
                     <div className="qr-countdown-card">
                         <p className="qr-countdown-label">Session closes in</p>
                         <p className="qr-countdown-time">{formatTime(countdown)}</p>
+                        <p style={{ fontSize: '12px', color: '#10b981', marginTop: '8px', fontWeight: '500' }}>
+                            🔄 QR code rotates every 5 seconds
+                        </p>
+                        <p style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
+                            Refreshed {qrRefreshCount} times
+                        </p>
                     </div>
                 </div>
 
@@ -148,7 +193,7 @@ const QRCodeSession = () => {
 
                 <div className="qr-session-footer">
                     <p>
-                        Students can scan this QR code to mark their attendance
+                        Students can scan this QR code to mark their attendance. The QR code changes every 5 seconds for security.
                     </p>
                 </div>
             </div>

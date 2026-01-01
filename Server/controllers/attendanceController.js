@@ -1,6 +1,7 @@
 const Attendance = require('../models/Attendance');
 const Session = require('../models/Session');
 const Course = require('../models/Course');
+const { validateTimeToken } = require('./sessionController');
 
 exports.getAttendanceRecords = async (req, res) => {
     try {
@@ -58,13 +59,21 @@ exports.getAttendanceRecords = async (req, res) => {
 
 exports.markAttendance = async (req, res) => {
     try {
-        const { sessionId, studentId } = req.body;
+        const { sessionId, studentId, token } = req.body;
 
         // Get client IP address
         const ipAddress = req.headers['x-forwarded-for']?.split(',')[0] || req.ip || 'unknown';
 
         // Get device info from user agent
         const deviceInfo = req.headers['user-agent'] || 'Unknown device';
+
+        // Validate rotating token
+        if (!token || !validateTimeToken(sessionId, token)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid or expired QR code. Please scan the latest QR code.'
+            });
+        }
 
         // Find session
         const session = await Session.findById(sessionId);
@@ -118,6 +127,13 @@ exports.markAttendance = async (req, res) => {
                 success: false,
                 message: 'Attendance already marked for this session'
             });
+        }
+
+        // Auto-enroll student in course if not already enrolled
+        const course = await Course.findById(session.course);
+        if (course && !course.students.includes(studentId)) {
+            course.students.push(studentId);
+            await course.save();
         }
 
         // Create attendance record

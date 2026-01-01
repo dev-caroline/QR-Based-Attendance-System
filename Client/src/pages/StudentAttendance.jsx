@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { CheckCircle, XCircle, Clock } from 'lucide-react';
 import { getSession, markAttendance } from '../services/apiService';
 import Loader from '../components/Loader';
@@ -8,16 +8,25 @@ import '../styles/StudentAttendance.css';
 const StudentAttendance = () => {
     const { sessionId } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const [session, setSession] = useState(null);
     const [matricNumber, setMatricNumber] = useState('');
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [status, setStatus] = useState(null); // 'success', 'error', 'expired'
     const [message, setMessage] = useState('');
+    const [qrToken, setQrToken] = useState('');
 
     useEffect(() => {
         fetchSession();
-    }, [sessionId]);
+        
+        // Extract token from URL query params if present
+        const searchParams = new URLSearchParams(location.search);
+        const tokenParam = searchParams.get('token');
+        if (tokenParam) {
+            setQrToken(tokenParam);
+        }
+    }, [sessionId, location]);
 
     const fetchSession = async () => {
         try {
@@ -54,11 +63,18 @@ const StudentAttendance = () => {
         setMessage('');
 
         try {
-            await markAttendance({
+            const attendanceData = {
                 sessionId: sessionId,
                 studentId: matricNumber.trim(),
                 method: 'qr'
-            });
+            };
+
+            // Add token if available
+            if (qrToken) {
+                attendanceData.token = qrToken;
+            }
+
+            await markAttendance(attendanceData);
 
             setStatus('success');
             setMessage('Attendance marked successfully!');
@@ -163,6 +179,20 @@ const StudentAttendance = () => {
                                 <div className="error-message">
                                     <XCircle size={20} />
                                     <span>{message}</span>
+                                </div>
+                            )}
+
+                            {!qrToken && (
+                                <div style={{
+                                    padding: '12px',
+                                    backgroundColor: '#fef3c7',
+                                    border: '1px solid #fbbf24',
+                                    borderRadius: '6px',
+                                    fontSize: '13px',
+                                    color: '#92400e',
+                                    marginBottom: '16px'
+                                }}>
+                                    ⚠️ No valid QR token detected. Please scan the latest QR code from your lecturer's screen.
                                 </div>
                             )}
 

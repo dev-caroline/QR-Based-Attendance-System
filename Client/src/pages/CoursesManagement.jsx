@@ -200,8 +200,9 @@ const CoursesManagement = () => {
                                         fontWeight: '500',
                                         marginTop: '8px'
                                     }}
+                                    title="Students are auto-enrolled when they mark attendance. Use this to view or manually manage enrollment."
                                 >
-                                    Manage Students
+                                    View/Manage Students
                                 </button>
                             </div>
                         </div>
@@ -307,6 +308,17 @@ const CoursesManagement = () => {
                             </button>
                         </div>
                         <div className="modal-body">
+                            <div style={{ 
+                                padding: '12px', 
+                                backgroundColor: '#e0e7ff', 
+                                border: '1px solid #c7d2fe', 
+                                borderRadius: '8px',
+                                marginBottom: '16px'
+                            }}>
+                                <p style={{ fontSize: '14px', color: '#3730a3', margin: 0 }}>
+                                    💡 <strong>Auto-enrollment enabled:</strong> Students are automatically enrolled when they mark attendance for the first time. You can optionally pre-enroll students here.
+                                </p>
+                            </div>
                             <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '12px' }}>
                                 Enter matric numbers (one per line):
                             </p>
