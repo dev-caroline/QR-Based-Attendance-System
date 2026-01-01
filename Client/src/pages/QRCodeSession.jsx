@@ -25,7 +25,7 @@ const QRCodeSession = () => {
     useEffect(() => {
         const fetchToken = async () => {
             try {
-                const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+                const API_URL = import.meta.env.VITE_API_URL || 'https://qr-based-attendance-system-production.up.railway.app/api';
                 const response = await axios.get(`${API_URL}/sessions/${sessionId}/token`);
                 const token = response.data.data.token;
                 setCurrentToken(token);

@@ -14,7 +14,10 @@ const manualRequestRoutes = require('./routes/manualRequestRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL || 'https://qr-based-attendance-system-eight.vercel.app',
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
