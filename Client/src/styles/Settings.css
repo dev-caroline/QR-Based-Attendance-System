@@ -91,6 +91,12 @@
     padding: 32px;
 }
 
+@media (max-width: 768px) {
+    .settings-section {
+        padding: 20px 16px;
+    }
+}
+
 .section-header {
     margin-bottom: 32px;
     padding-bottom: 24px;
@@ -124,6 +130,15 @@
     margin-bottom: 32px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+    .settings-profile-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 16px;
+        gap: 16px;
+    }
 }
 
 .profile-avatar {
@@ -166,6 +181,12 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+@media (max-width: 768px) {
+    .change-photo-button {
+        width: 100%;
+    }
+}
+
 .remove-photo-button {
     padding: 10px 20px;
     background: rgba(239, 68, 68, 0.1);
@@ -181,6 +202,14 @@
 .remove-photo-button:hover {
     background: rgba(239, 68, 68, 0.2);
     transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .remove-photo-button {
+        width: 100%;
+        margin-left: 0 !important;
+        margin-top: 8px;
+    }
 }
 
 .settings-form {
