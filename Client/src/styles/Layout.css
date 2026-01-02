@@ -49,6 +49,7 @@
     overflow-x: hidden;
     max-width: 100%;
     height: calc(100vh - 70px);
+    margin-top: 70px;
 }
 
 @media (max-width: 768px) {
@@ -59,5 +60,6 @@
     .layout-main-content {
         padding: 16px;
         height: calc(100vh - 60px);
+        margin-top: 60px;
     }
 }
