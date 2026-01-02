@@ -7,6 +7,12 @@
     flex-direction: column;
 }
 
+@media (max-width: 768px) {
+    .attendance-container {
+        padding: 16px;
+    }
+}
+
 .attendance-header {
     margin-bottom: 32px;
 }
@@ -95,12 +101,31 @@
     margin-bottom: 32px;
 }
 
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+}
+
 .stat-card {
     background: white;
     border-radius: 12px;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     padding: 24px;
     transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+    .stat-card {
+        padding: 16px;
+        border-radius: 8px;
+    }
+
+    .stat-card:hover {
+        transform: none;
+    }
 }
 
 .stat-card:hover {

@@ -4,14 +4,32 @@
     padding: 24px;
 }
 
+@media (max-width: 768px) {
+    .requests-container {
+        padding: 16px;
+    }
+}
+
 .requests-header {
     margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+    .requests-header {
+        margin-bottom: 16px;
+    }
 }
 
 .requests-header h1 {
     font-size: 24px;
     font-weight: bold;
     color: #1a202c;
+}
+
+@media (max-width: 768px) {
+    .requests-header h1 {
+        font-size: 20px;
+    }
 }
 
 .requests-header p {
@@ -89,9 +107,22 @@
     overflow: hidden;
 }
 
+@media (max-width: 768px) {
+    .requests-table-container {
+        border-radius: 8px;
+        overflow-x: auto;
+    }
+}
+
 .requests-table {
     width: 100%;
     border-collapse: collapse;
+}
+
+@media (max-width: 768px) {
+    .requests-table {
+        display: none;
+    }
 }
 
 .requests-table thead {
@@ -234,4 +265,96 @@
 .pagination-info {
     font-size: 14px;
     color: #718096;
+}
+
+/* Mobile card layout */
+.requests-mobile-list {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .requests-mobile-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .request-mobile-card {
+        background: white;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    .request-mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .request-mobile-student {
+        flex: 1;
+    }
+
+    .request-mobile-student .student-name {
+        font-weight: 600;
+        color: #1a202c;
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
+    .request-mobile-student .student-id {
+        font-size: 13px;
+        color: #718096;
+    }
+
+    .request-mobile-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .request-mobile-row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .request-mobile-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .request-mobile-value {
+        font-size: 14px;
+        color: #1f2937;
+    }
+
+    .request-mobile-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 12px;
+        border-top: 1px solid #f3f4f6;
+    }
+
+    .course-date {
+        font-size: 13px;
+        color: #6b7280;
+        margin-top: 2px;
+    }
+
+    .course-name {
+        font-weight: 500;
+        color: #1a202c;
+        font-size: 14px;
+    }
 }

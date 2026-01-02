@@ -155,12 +155,12 @@ const QRCodeSession = () => {
                         {qrData ? (
                             <QRCode
                                 value={qrData}
-                                size={240}
+                                size={window.innerWidth <= 640 ? 160 : window.innerWidth <= 768 ? 180 : 240}
                                 level="H"
                             />
                         ) : (
-                            <div style={{ width: 240, height: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f3f4f6' }}>
-                                <p>Loading QR Code...</p>
+                            <div style={{ width: window.innerWidth <= 640 ? 160 : window.innerWidth <= 768 ? 180 : 240, height: window.innerWidth <= 640 ? 160 : window.innerWidth <= 768 ? 180 : 240, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f3f4f6' }}>
+                                <p style={{ fontSize: window.innerWidth <= 640 ? '11px' : '13px' }}>Loading QR Code...</p>
                             </div>
                         )}
                     </div>

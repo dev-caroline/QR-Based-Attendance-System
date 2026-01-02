@@ -34,6 +34,17 @@
     gap: 16px;
 }
 
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 12px;
+        height: 60px;
+    }
+    
+    .navbar-actions {
+        gap: 8px;
+    }
+}
+
 .notification-container {
     position: relative;
 }
@@ -72,12 +83,19 @@
     top: calc(100% + 8px);
     right: 0;
     width: 380px;
+    max-width: calc(100vw - 32px);
     background: white;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     border: 1px solid #e5e7eb;
     overflow: hidden;
     z-index: 1000;
+}
+
+@media (max-width: 480px) {
+    .notification-dropdown {
+        width: 320px;
+    }
 }
 
 .notification-header {
@@ -209,4 +227,28 @@
 
 .user-button:hover {
     background: #f3f4f6;
+}
+
+.user-name-full {
+    display: inline;
+}
+
+.user-name-initials {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .user-button {
+        padding: 8px;
+        gap: 4px;
+    }
+
+    .user-name-full {
+        display: none;
+    }
+
+    .user-name-initials {
+        display: inline;
+        font-weight: 600;
+    }
 }

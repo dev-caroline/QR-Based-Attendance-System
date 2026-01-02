@@ -5,7 +5,9 @@ import Loader from '../components/Loader';
 import '../styles/AttendanceRecords.css';
 
 const AttendanceRecords = () => {
-    const [selectedCourse, setSelectedCourse] = useState('');
+    const [selectedCourse, setSelectedCourse] = useState(() => {
+        return localStorage.getItem('selectedCourse') || '';
+    });
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
     const [searchQuery, setSearchQuery] = useState('');
     const [courses, setCourses] = useState([]);
@@ -20,6 +22,7 @@ const AttendanceRecords = () => {
     useEffect(() => {
         if (selectedCourse) {
             fetchAttendanceStats();
+            localStorage.setItem('selectedCourse', selectedCourse);
         }
     }, [selectedCourse, selectedDate]);
 
@@ -27,7 +30,7 @@ const AttendanceRecords = () => {
         try {
             const response = await getCourses();
             setCourses(response.data);
-            if (response.data.length > 0) {
+            if (response.data.length > 0 && !selectedCourse) {
                 setSelectedCourse(response.data[0]._id);
             }
         } catch (error) {

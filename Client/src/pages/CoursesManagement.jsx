@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
-import { getCourses, createCourse, updateCourse, deleteCourse } from '../services/apiService';import Loader from '../components/Loader';import '../styles/CoursesManagement.css';
+import { getCourses, createCourse, updateCourse, deleteCourse } from '../services/apiService';
+import '../styles/CoursesManagement.css';
+import Loader from '../components/Loader';
 
 const CoursesManagement = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -124,8 +126,8 @@ const CoursesManagement = () => {
             {/* Page Header */}
             <div className="courses-header">
                 <div>
-                    <h1 style={{ fontSize: '30px', fontWeight: 'bold', color: '#1a202c' }}>Courses Management</h1>
-                    <p style={{ color: '#718096', marginTop: '8px' }}>Manage your courses and class information</p>
+                    <h1>Courses Management</h1>
+                    <p>Manage your courses and class information</p>
                 </div>
                 <button 
                     onClick={() => {
@@ -142,14 +144,14 @@ const CoursesManagement = () => {
 
             {/* Search Section */}
             <div className="search-card">
-                <div className="search-wrapper">
+                <div className="search-input-wrapper">
                     <Search className="search-icon" size={20} />
                     <input
                         type="text"
                         placeholder="Search by course name or code..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="search-input"
+                        className="courses-search-input"
                     />
                 </div>
             </div>
@@ -163,19 +165,19 @@ const CoursesManagement = () => {
                 <div className="courses-grid">
                     {filteredCourses.map((course) => (
                         <div key={course._id} className="course-card">
-                            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '16px' }}>
-                                <span className="course-code">
+                            <div className="course-card-header">
+                                <span className="course-code-badge">
                                     {course.code}
                                 </span>
                                 <div className="course-actions">
                                     <button 
-                                        className="action-button edit-button"
+                                        className="course-action-button edit"
                                         onClick={() => handleEdit(course)}
                                     >
                                         <Edit size={18} />
                                     </button>
                                     <button 
-                                        className="action-button delete-button"
+                                        className="course-action-button delete"
                                         onClick={() => handleDelete(course._id)}
                                     >
                                         <Trash2 size={18} />
@@ -183,28 +185,18 @@ const CoursesManagement = () => {
                                 </div>
                             </div>
                             <h3 className="course-name">{course.name}</h3>
-                            <div className="course-students">
-                                <span style={{ fontSize: '14px', color: '#718096' }}>
-                                    <span style={{ fontWeight: '600', color: '#1a202c' }}>{course.students?.length || 0}</span> Students Enrolled
+                            <div className="course-footer">
+                                <span className="student-count">
+                                    <span className="count">{course.students?.length || 0}</span> Students Enrolled
                                 </span>
-                                <button
-                                    onClick={() => handleEnrollStudents(course)}
-                                    style={{
-                                        padding: '6px 12px',
-                                        background: '#667eea',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '6px',
-                                        fontSize: '13px',
-                                        cursor: 'pointer',
-                                        fontWeight: '500',
-                                        marginTop: '8px'
-                                    }}
-                                    title="Students are auto-enrolled when they mark attendance. Use this to view or manually manage enrollment."
-                                >
-                                    View/Manage Students
-                                </button>
                             </div>
+                            <button
+                                onClick={() => handleEnrollStudents(course)}
+                                className="enroll-button"
+                                title="Students are auto-enrolled when they mark attendance. Use this to view or manually manage enrollment."
+                            >
+                                View/Manage Students
+                            </button>
                         </div>
                     ))}
                 </div>
@@ -225,53 +217,43 @@ const CoursesManagement = () => {
                         </div>
                         <div className="modal-body">
                             {error && (
-                                <div style={{
-                                    padding: '12px',
-                                    backgroundColor: '#fee',
-                                    border: '1px solid #fcc',
-                                    borderRadius: '6px',
-                                    color: '#c33',
-                                    marginBottom: '20px',
-                                    fontSize: '14px'
-                                }}>
+                                <div className="error-message">
                                     {error}
                                 </div>
                             )}
                             <form className="modal-form" onSubmit={handleSubmit}>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        <label style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>Course Code *</label>
-                                        <input 
-                                            type="text" 
-                                            placeholder="e.g., CS101" 
-                                            required
-                                            value={formData.code}
-                                            onChange={(e) => setFormData({...formData, code: e.target.value})}
-                                            className="modal-input"
-                                        />
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        <label style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>Course Name *</label>
-                                        <input 
-                                            type="text"
-                                            placeholder="e.g., Introduction to Computer Science"
-                                            required
-                                            value={formData.name}
-                                            onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                            className="modal-input"
-                                        />
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        <label style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>Student Count *</label>
-                                        <input 
-                                            type="number"
-                                            placeholder="e.g., 30"
-                                            required
-                                            value={formData.studentCount}
-                                            onChange={(e) => setFormData({...formData, studentCount: e.target.value})}
-                                            className="modal-input"
-                                        />
-                                    </div>
+                                <div className="form-group">
+                                    <label className="form-label">Course Code *</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="e.g., CS101" 
+                                        required
+                                        value={formData.code}
+                                        onChange={(e) => setFormData({...formData, code: e.target.value})}
+                                        className="modal-input"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Course Name *</label>
+                                    <input 
+                                        type="text"
+                                        placeholder="e.g., Introduction to Computer Science"
+                                        required
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                        className="modal-input"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Student Count *</label>
+                                    <input 
+                                        type="number"
+                                        placeholder="e.g., 30"
+                                        required
+                                        value={formData.studentCount}
+                                        onChange={(e) => setFormData({...formData, studentCount: e.target.value})}
+                                        className="modal-input"
+                                    />
                                 </div>
                                 <div className="modal-actions">
                                     <button 
@@ -308,36 +290,21 @@ const CoursesManagement = () => {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <div style={{ 
-                                padding: '12px', 
-                                backgroundColor: '#e0e7ff', 
-                                border: '1px solid #c7d2fe', 
-                                borderRadius: '8px',
-                                marginBottom: '16px'
-                            }}>
-                                <p style={{ fontSize: '14px', color: '#3730a3', margin: 0 }}>
+                            <div className="info-box">
+                                <p>
                                     💡 <strong>Auto-enrollment enabled:</strong> Students are automatically enrolled when they mark attendance for the first time. You can optionally pre-enroll students here.
                                 </p>
                             </div>
-                            <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '12px' }}>
+                            <p className="enrollment-label">
                                 Enter matric numbers (one per line):
                             </p>
                             <textarea
                                 value={enrollmentData}
                                 onChange={(e) => setEnrollmentData(e.target.value)}
                                 placeholder="U2020/1234567&#10;U2020/1234568&#10;U2020/1234569"
-                                style={{
-                                    width: '100%',
-                                    minHeight: '300px',
-                                    padding: '12px',
-                                    border: '2px solid #e5e7eb',
-                                    borderRadius: '8px',
-                                    fontSize: '14px',
-                                    fontFamily: 'monospace',
-                                    resize: 'vertical'
-                                }}
+                                className="enrollment-textarea"
                             />
-                            <div className="modal-actions" style={{ marginTop: '20px' }}>
+                            <div className="modal-actions">
                                 <button 
                                     type="button"
                                     onClick={() => setShowEnrollModal(false)}
@@ -347,7 +314,7 @@ const CoursesManagement = () => {
                                 </button>
                                 <button 
                                     onClick={handleSaveEnrollment}
-                                    className="modal-button-save"
+                                    className="modal-button-submit"
                                 >
                                     Save Enrollment
                                 </button>

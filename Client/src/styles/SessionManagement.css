@@ -4,6 +4,12 @@
     padding: 24px;
 }
 
+@media (max-width: 768px) {
+    .session-container {
+        padding: 16px;
+    }
+}
+
 .session-header {
     margin-bottom: 24px;
     display: flex;
@@ -74,6 +80,13 @@
     max-width: 1400px;
 }
 
+@media (max-width: 768px) {
+    .sessions-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
 @media (min-width: 1024px) {
     .sessions-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -95,6 +108,13 @@
     transition: box-shadow 0.3s;
 }
 
+@media (max-width: 768px) {
+    .session-card {
+        padding: 16px;
+        border-radius: 8px;
+    }
+}
+
 .session-card:hover {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -110,6 +130,14 @@
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+    .session-badge {
+        padding: 3px 10px;
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
 }
 
 .session-badge-live {
@@ -141,11 +169,25 @@
     margin-bottom: 8px;
 }
 
+@media (max-width: 768px) {
+    .session-course-code {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+}
+
 .session-title {
     font-size: 18px;
     font-weight: 600;
     color: #1a202c;
     margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+    .session-title {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
 }
 
 .session-details {
@@ -219,6 +261,104 @@
 }
 
 /* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 16px;
+}
+
+@media (max-width: 768px) {
+    .modal-overlay {
+        padding: 12px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 32rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 100%;
+        max-height: calc(100vh - 40px);
+        border-radius: 12px;
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+@media (max-width: 768px) {
+    .modal-header {
+        padding: 16px;
+    }
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a202c;
+}
+
+@media (max-width: 768px) {
+    .modal-title {
+        font-size: 18px;
+    }
+}
+
+.close-button {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button:hover {
+    background: #f3f4f6;
+    color: #1a202c;
+}
+
+@media (max-width: 768px) {
+    .close-button svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+@media (max-width: 768px) {
+    .modal-body {
+        padding: 16px;
+    }
+}
+
 .session-modal-overlay {
     position: fixed;
     inset: 0;
@@ -279,16 +419,35 @@
     gap: 20px;
 }
 
+@media (max-width: 768px) {
+    .session-modal-form {
+        padding: 0;
+        gap: 16px;
+    }
+}
+
 .session-form-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
+@media (max-width: 768px) {
+    .session-form-group {
+        gap: 6px;
+    }
+}
+
 .session-form-label {
     font-size: 14px;
     font-weight: 600;
     color: #374151;
+}
+
+@media (max-width: 768px) {
+    .session-form-label {
+        font-size: 13px;
+    }
 }
 
 .session-form-input,
@@ -301,6 +460,15 @@
     outline: none;
     transition: all 0.3s;
     background: #f9fafb;
+}
+
+@media (max-width: 768px) {
+    .session-form-input,
+    .session-form-select {
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
 }
 
 .session-form-input:hover,
@@ -322,6 +490,14 @@
     padding-top: 16px;
 }
 
+@media (max-width: 768px) {
+    .session-modal-actions {
+        flex-direction: column;
+        gap: 10px;
+        padding-top: 12px;
+    }
+}
+
 .session-modal-button {
     flex: 1;
     padding: 12px 16px;
@@ -331,6 +507,14 @@
     cursor: pointer;
     transition: all 0.3s;
     border: none;
+}
+
+@media (max-width: 768px) {
+    .session-modal-button {
+        padding: 11px 14px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
 }
 
 .session-modal-button-cancel {

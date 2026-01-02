@@ -8,14 +8,22 @@
     position: relative;
 }
 
+@media (max-width: 768px) {
+    .qr-session-page {
+        padding: 16px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+}
+
 .qr-close-button {
     position: absolute;
     top: 24px;
     right: 24px;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    color: white;
+    color: #667eea;
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -23,6 +31,28 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.qr-close-button:hover {
+    background: white;
+    transform: scale(1.1);
+    color: #5568d3;
+}
+
+@media (max-width: 768px) {
+    .qr-close-button {
+        top: 10px;
+        right: 10px;
+        padding: 10px;
+        background: white;
+    }
+
+    .qr-close-button svg {
+        width: 20px;
+        height: 20px;
+    }
 }
 
 .qr-close-button:hover {
@@ -40,9 +70,23 @@
     margin: 0 auto;
 }
 
+@media (max-width: 768px) {
+    .qr-session-card {
+        padding: 20px;
+        border-radius: 16px;
+        max-width: 100%;
+    }
+}
+
 .qr-session-header {
     text-align: center;
     margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+    .qr-session-header {
+        margin-bottom: 20px;
+    }
 }
 
 .qr-session-title {
@@ -52,11 +96,26 @@
     margin-bottom: 8px;
 }
 
+@media (max-width: 768px) {
+    .qr-session-title {
+        font-size: 18px;
+        line-height: 1.4;
+        margin-bottom: 6px;
+    }
+}
+
 .qr-session-details {
     display: flex;
     flex-direction: column;
     gap: 4px;
     margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+    .qr-session-details {
+        margin-top: 12px;
+        gap: 3px;
+    }
 }
 
 .qr-session-date {
@@ -65,10 +124,23 @@
     color: #1a202c;
 }
 
+@media (max-width: 768px) {
+    .qr-session-date {
+        font-size: 15px;
+    }
+}
+
 .qr-session-time,
 .qr-session-room {
     font-size: 14px;
     color: #718096;
+}
+
+@media (max-width: 768px) {
+    .qr-session-time,
+    .qr-session-room {
+        font-size: 12px;
+    }
 }
 
 .qr-content-wrapper {
@@ -78,12 +150,33 @@
     gap: 24px;
 }
 
+@media (max-width: 768px) {
+    .qr-content-wrapper {
+        gap: 16px;
+    }
+}
+
 .qr-code-display {
     background: white;
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     border: 4px solid #f3f4f6;
+}
+
+@media (max-width: 768px) {
+    .qr-code-display {
+        padding: 10px;
+        border-radius: 10px;
+        border: 2px solid #f3f4f6;
+    }
+}
+
+@media (max-width: 640px) {
+    .qr-code-display {
+        padding: 8px;
+        border-radius: 8px;
+    }
 }
 
 .qr-countdown-card {
@@ -95,11 +188,25 @@
     box-shadow: 0 10px 15px -3px rgba(102, 126, 234, 0.3);
 }
 
+@media (max-width: 768px) {
+    .qr-countdown-card {
+        padding: 12px 20px;
+        border-radius: 12px;
+        width: 100%;
+    }
+}
+
 .qr-countdown-label {
     font-size: 13px;
     font-weight: 500;
     margin-bottom: 4px;
     opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .qr-countdown-label {
+        font-size: 12px;
+    }
 }
 
 .qr-countdown-time {
@@ -108,11 +215,25 @@
     letter-spacing: 0.05em;
 }
 
+@media (max-width: 768px) {
+    .qr-countdown-time {
+        font-size: 28px;
+    }
+}
+
 .qr-actions {
     display: flex;
     gap: 12px;
     margin-top: 24px;
     justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .qr-actions {
+        flex-direction: column;
+        margin-top: 16px;
+        gap: 8px;
+    }
 }
 
 .qr-action-button {
@@ -128,6 +249,13 @@
     border: none;
     cursor: pointer;
     transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+    .qr-action-button {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
 }
 
 .qr-action-button.primary {
@@ -156,25 +284,26 @@
     text-align: center;
 }
 
+@media (max-width: 768px) {
+    .qr-session-footer {
+        margin-top: 16px;
+    }
+}
+
 .qr-session-footer p {
     font-size: 13px;
     color: #718096;
 }
 
+@media (max-width: 768px) {
+    .qr-session-footer p {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+}
+
 @media (max-width: 640px) {
-    .qr-session-card {
-        padding: 24px;
-    }
-
-    .qr-code-display {
-        padding: 16px;
-    }
-
-    .qr-countdown-time {
-        font-size: 36px;
-    }
-
-    .qr-actions {
-        flex-direction: column;
+    .qr-session-page {
+        padding: 12px;
     }
 }

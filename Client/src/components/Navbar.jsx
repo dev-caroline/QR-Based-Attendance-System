@@ -68,6 +68,13 @@ const Navbar = ({ sidebarOpen, toggleSidebar }) => {
         return `${days}d ago`;
     };
 
+    const getInitials = (name) => {
+        if (!name) return 'U';
+        const parts = name.trim().split(' ');
+        if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+        return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    };
+
     return (
         <header className="navbar">
             <button onClick={toggleSidebar} className="navbar-toggle">
@@ -131,7 +138,8 @@ const Navbar = ({ sidebarOpen, toggleSidebar }) => {
                 </div>
                 <button className="user-button">
                     <User size={20} />
-                    <span>{user?.fullName || 'User'}</span>
+                    <span className="user-name-full">{user?.fullName || 'User'}</span>
+                    <span className="user-name-initials">{getInitials(user?.fullName)}</span>
                 </button>
             </div>
         </header>
