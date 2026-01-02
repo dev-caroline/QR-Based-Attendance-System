@@ -42,14 +42,7 @@ const Registration = () => {
             });
             
             if (result.success) {
-                // Clear form and redirect to login
-                setFormData({
-                    fullName: '',
-                    email: '',
-                    password: '',
-                    confirmPassword: ''
-                });
-                navigate('/login');
+                navigate('/dashboard');
             } else {
                 setError(result.error);
             }

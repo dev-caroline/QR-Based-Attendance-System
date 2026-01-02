@@ -28,8 +28,12 @@ export const AuthProvider = ({ children }) => {
                 setUser(response.data.user);
             }
         } catch (error) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            console.error('Auth check error:', error);
+            if (error.response?.status === 401) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                setUser(null);
+            }
         } finally {
             setLoading(false);
         }
@@ -61,6 +65,12 @@ export const AuthProvider = ({ children }) => {
         try {
             setError(null);
             const response = await registerAPI(userData);
+            const { user, token } = response.data;
+            
+            localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            setUser(user);
+            
             return { success: true };
         } catch (error) {
             const message = error.response?.data?.message || 'Registration failed';

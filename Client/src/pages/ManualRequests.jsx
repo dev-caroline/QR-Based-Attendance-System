@@ -70,6 +70,35 @@ const ManualRequests = () => {
                 <p>Review and approve student attendance requests</p>
             </div>
 
+            <div style={{ 
+                marginBottom: '24px', 
+                padding: '16px', 
+                background: '#f0f9ff', 
+                border: '2px solid #667eea', 
+                borderRadius: '12px',
+                textAlign: 'center'
+            }}>
+                <p style={{ fontSize: '14px', color: '#0369a1', fontWeight: '600', marginBottom: '8px' }}>
+                    📝 Manual Attendance Page
+                </p>
+                <p style={{ fontSize: '13px', color: '#075985', marginBottom: '10px' }}>
+                    Link for students who can't scan the QR code:
+                </p>
+                <code style={{ 
+                    fontSize: '12px', 
+                    background: 'white', 
+                    padding: '10px 16px', 
+                    borderRadius: '6px',
+                    display: 'inline-block',
+                    color: '#667eea',
+                    fontWeight: '600',
+                    wordBreak: 'break-all',
+                    border: '1px solid #bae6fd'
+                }}>
+                    /manual-attendance
+                </code>
+            </div>
+
             {/* Search and Filter */}
             <div className="requests-filters">
                 <div className="requests-search-wrapper">

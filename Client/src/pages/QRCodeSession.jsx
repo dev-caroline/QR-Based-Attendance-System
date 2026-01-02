@@ -43,8 +43,8 @@ const QRCodeSession = () => {
         // Fetch immediately
         fetchToken();
 
-        // Then fetch every 5 seconds
-        const tokenInterval = setInterval(fetchToken, 5000);
+        // Then fetch every 15 seconds
+        const tokenInterval = setInterval(fetchToken, 15000);
 
         return () => clearInterval(tokenInterval);
     }, [sessionId]);
@@ -169,7 +169,7 @@ const QRCodeSession = () => {
                         <p className="qr-countdown-label">Session closes in</p>
                         <p className="qr-countdown-time">{formatTime(countdown)}</p>
                         <p style={{ fontSize: '12px', color: '#10b981', marginTop: '8px', fontWeight: '500' }}>
-                            🔄 QR code rotates every 5 seconds
+                            🔄 QR code rotates every 15 seconds
                         </p>
                         <p style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
                             Refreshed {qrRefreshCount} times
@@ -193,7 +193,7 @@ const QRCodeSession = () => {
 
                 <div className="qr-session-footer">
                     <p>
-                        Students can scan this QR code to mark their attendance. The QR code changes every 5 seconds for security.
+                        Students can scan this QR code to mark their attendance. The QR code changes every 15 seconds for security.
                     </p>
                 </div>
             </div>

@@ -3,19 +3,19 @@ const Course = require('../models/Course');
 const Attendance = require('../models/Attendance');
 const crypto = require('crypto');
 
-// Helper function to generate time-based token (changes every 5 seconds)
+// Helper function to generate time-based token (changes every 15 seconds)
 const generateTimeToken = (sessionId, timeWindow) => {
     const secret = process.env.JWT_SECRET || 'your-secret-key';
     const data = `${sessionId}-${timeWindow}`;
     return crypto.createHmac('sha256', secret).update(data).digest('hex').substring(0, 16);
 };
 
-// Helper function to get current time window (5-second intervals)
+// Helper function to get current time window (15-second intervals)
 const getCurrentTimeWindow = () => {
-    return Math.floor(Date.now() / 5000);
+    return Math.floor(Date.now() / 15000);
 };
 
-// Helper function to validate token (accepts current and previous window for 5-second grace period)
+// Helper function to validate token (accepts current and previous window for 15-second grace period)
 const validateTimeToken = (sessionId, token) => {
     const currentWindow = getCurrentTimeWindow();
     const previousWindow = currentWindow - 1;
