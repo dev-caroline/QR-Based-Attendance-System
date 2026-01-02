@@ -24,7 +24,7 @@ exports.register = async (req, res) => {
             fullName,
             email,
             password,
-            role: role || 'lecturer'
+            role: 'lecturer'
         });
 
         const token = generateToken(user._id);
