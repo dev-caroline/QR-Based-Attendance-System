@@ -125,7 +125,7 @@ const CoursesManagement = () => {
         <div className="courses-container">
             {/* Page Header */}
             <div className="courses-header">
-                <div>
+                <div className="courses-header-content">
                     <h1>Courses Management</h1>
                     <p>Manage your courses and class information</p>
                 </div>
