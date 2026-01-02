@@ -123,7 +123,6 @@ const CoursesManagement = () => {
 
     return (
         <div className="courses-container">
-            {/* Page Header */}
             <div className="courses-header">
                 <div className="courses-header-content">
                     <h1>Courses Management</h1>
@@ -142,7 +141,6 @@ const CoursesManagement = () => {
                 </button>
             </div>
 
-            {/* Search Section */}
             <div className="search-card">
                 <div className="search-input-wrapper">
                     <Search className="search-icon" size={20} />
@@ -156,7 +154,6 @@ const CoursesManagement = () => {
                 </div>
             </div>
 
-            {/* Courses Grid */}
             {loading ? (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                     <p>Loading courses...</p>
@@ -202,7 +199,6 @@ const CoursesManagement = () => {
                 </div>
             )}
 
-            {/* Add/Edit Course Modal */}
             {showModal && (
                 <div className="modal-overlay" onClick={handleCloseModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -276,7 +272,6 @@ const CoursesManagement = () => {
                 </div>
             )}
 
-            {/* Enrollment Modal */}
             {showEnrollModal && (
                 <div className="modal-overlay" onClick={() => setShowEnrollModal(false)}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
