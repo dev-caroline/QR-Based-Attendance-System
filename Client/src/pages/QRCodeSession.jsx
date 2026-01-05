@@ -74,77 +74,96 @@ const QRCodeSession = () => {
     };
 
     const downloadQR = () => {
-        if (!qrData) return;
+        if (!qrData) {
+            alert('QR code is not ready yet');
+            return;
+        }
         
-        // Create a temporary container for generating high-quality QR code
-        const container = document.createElement('div');
-        container.style.position = 'absolute';
-        container.style.left = '-9999px';
-        document.body.appendChild(container);
+        const svg = document.querySelector('.qr-code-display svg');
+        if (!svg) {
+            alert('QR code not found');
+            return;
+        }
         
-        // Import QRCode.react to generate a fresh SVG
-        import('react-dom/client').then((ReactDOM) => {
-            import('react-qr-code').then((QRCodeModule) => {
-                const QRCodeComponent = QRCodeModule.default;
-                
-                // Create a root and render the QR code
-                const root = ReactDOM.createRoot(container);
-                root.render(
-                    QRCodeComponent({ value: qrData, size: 512, level: 'H' })
-                );
-                
-                // Wait for render to complete
-                setTimeout(() => {
-                    const svg = container.querySelector('svg');
-                    if (!svg) {
-                        alert('Failed to generate QR code');
-                        document.body.removeChild(container);
-                        return;
-                    }
-                    
-                    // Set proper dimensions
-                    svg.setAttribute('width', '512');
-                    svg.setAttribute('height', '512');
-                    
-                    const svgData = new XMLSerializer().serializeToString(svg);
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    
-                    canvas.width = 512;
-                    canvas.height = 512;
-                    
-                    const img = new Image();
-                    img.onload = () => {
-                        // Draw white background first
-                        ctx.fillStyle = 'white';
-                        ctx.fillRect(0, 0, 512, 512);
-                        // Draw QR code
-                        ctx.drawImage(img, 0, 0, 512, 512);
-                        
-                        const url = canvas.toDataURL('image/png');
-                        const link = document.createElement('a');
-                        link.download = `${session.course?.code || 'session'}-qr-code.png`;
-                        link.href = url;
-                        link.click();
-                        
-                        // Cleanup
-                        root.unmount();
-                        document.body.removeChild(container);
-                    };
-                    
-                    img.onerror = () => {
-                        alert('Failed to generate QR code image');
-                        root.unmount();
-                        document.body.removeChild(container);
-                    };
-                    
-                    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
-                }, 100);
-            });
-        }).catch(error => {
-            console.error('Failed to generate QR code:', error);
-            alert('Failed to generate QR code for download');
-            document.body.removeChild(container);
+        // Clone and modify SVG for high quality export
+        const svgClone = svg.cloneNode(true);
+        svgClone.setAttribute('width', '1024');
+        svgClone.setAttribute('height', '1024');
+        
+        const svgData = new XMLSerializer().serializeToString(svgClone);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = 1024;
+        canvas.height = 1024;
+        
+        const img = new Image();
+        img.onload = () => {
+            // White background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 1024, 1024);
+            // Draw QR code
+            ctx.drawImage(img, 0, 0, 1024, 1024);
+            
+            // Download
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = `${session.course?.code || 'session'}-qr-code.png`;
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        };
+        
+        img.onerror = () => {
+            alert('Failed to generate QR code image');
+        };
+        
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+    };
+
+    const shareSession = async () => {
+        if (!qrData) {
+            alert('QR code is not ready yet');
+            return;
+        }
+
+        const shareData = {
+            title: `${session.course?.code} - ${session.sessionName}`,
+            text: `Join the attendance session for ${session.course?.name}`,
+            url: qrData
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    // Fallback to copying link
+                    copyToClipboard();
+                }
+            }
+        } else {
+            // Fallback for browsers without Web Share API
+            copyToClipboard();
+        }
+    };
+
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(qrData).then(() => {
+            alert('Session link copied to clipboard!');
+        }).catch(() => {
+            // Fallback for older browsers
+            const textarea = document.createElement('textarea');
+            textarea.value = qrData;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('Session link copied to clipboard!');
         });
     };
 
@@ -210,7 +229,10 @@ const QRCodeSession = () => {
                         <Download size={20} />
                         Download QR
                     </button>
-                    <button className="qr-action-button secondary">
+                    <button 
+                        onClick={shareSession}
+                        className="qr-action-button secondary"
+                    >
                         <Share2 size={20} />
                         Share Session
                     </button>
