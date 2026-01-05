@@ -21,32 +21,12 @@ const QRCodeSession = () => {
         fetchSession();
     }, [sessionId]);
 
-    // Fetch rotating token every 5 seconds
+    // Generate static QR code
     useEffect(() => {
-        const fetchToken = async () => {
-            try {
-                const API_URL = import.meta.env.VITE_API_URL || 'https://qr-based-attendance-system-production.up.railway.app/api';
-                const response = await axios.get(`${API_URL}/sessions/${sessionId}/token`);
-                const token = response.data.data.token;
-                setCurrentToken(token);
-                setQrRefreshCount(prev => prev + 1);
-                
-                // Generate QR URL with sessionId and token
-                const baseUrl = window.location.origin;
-                const qrUrl = `${baseUrl}/session/${sessionId}/attendance?token=${token}`;
-                setQrData(qrUrl);
-            } catch (error) {
-                console.error('Failed to fetch token:', error);
-            }
-        };
-
-        // Fetch immediately
-        fetchToken();
-
-        // Then fetch every 15 seconds
-        const tokenInterval = setInterval(fetchToken, 15000);
-
-        return () => clearInterval(tokenInterval);
+        // Generate QR URL with just sessionId (no rotating token)
+        const baseUrl = window.location.origin;
+        const qrUrl = `${baseUrl}/session/${sessionId}/attendance`;
+        setQrData(qrUrl);
     }, [sessionId]);
 
     const fetchSession = async () => {
@@ -168,12 +148,6 @@ const QRCodeSession = () => {
                     <div className="qr-countdown-card">
                         <p className="qr-countdown-label">Session closes in</p>
                         <p className="qr-countdown-time">{formatTime(countdown)}</p>
-                        <p style={{ fontSize: '12px', color: '#10b981', marginTop: '8px', fontWeight: '500' }}>
-                            🔄 QR code rotates every 15 seconds
-                        </p>
-                        <p style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
-                            Refreshed {qrRefreshCount} times
-                        </p>
                     </div>
                 </div>
 
@@ -193,7 +167,7 @@ const QRCodeSession = () => {
 
                 <div className="qr-session-footer">
                     <p>
-                        Students can scan this QR code to mark their attendance. The QR code changes every 15 seconds for security.
+                        Students can scan this QR code to mark their attendance.
                     </p>
                 </div>
             </div>
