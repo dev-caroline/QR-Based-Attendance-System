@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Download, Share2, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import QRCode from 'react-qr-code';
 import { getSession } from '../services/apiService';
 import axios from 'axios';
@@ -21,12 +21,32 @@ const QRCodeSession = () => {
         fetchSession();
     }, [sessionId]);
 
-    // Generate static QR code
+    // Fetch rotating token every 30 seconds
     useEffect(() => {
-        // Generate QR URL with just sessionId (no rotating token)
-        const baseUrl = window.location.origin;
-        const qrUrl = `${baseUrl}/session/${sessionId}/attendance`;
-        setQrData(qrUrl);
+        const fetchToken = async () => {
+            try {
+                const API_URL = import.meta.env.VITE_API_URL || 'https://qr-based-attendance-system-production.up.railway.app/api';
+                const response = await axios.get(`${API_URL}/sessions/${sessionId}/token`);
+                const token = response.data.data.token;
+                setCurrentToken(token);
+                setQrRefreshCount(prev => prev + 1);
+                
+                // Generate QR URL with sessionId and token
+                const baseUrl = window.location.origin;
+                const qrUrl = `${baseUrl}/session/${sessionId}/attendance?token=${token}`;
+                setQrData(qrUrl);
+            } catch (error) {
+                console.error('Failed to fetch token:', error);
+            }
+        };
+
+        // Fetch immediately
+        fetchToken();
+
+        // Then fetch every 30 seconds
+        const tokenInterval = setInterval(fetchToken, 30000);
+
+        return () => clearInterval(tokenInterval);
     }, [sessionId]);
 
     const fetchSession = async () => {
@@ -73,99 +93,7 @@ const QRCodeSession = () => {
         return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     };
 
-    const downloadQR = () => {
-        if (!qrData) {
-            alert('QR code is not ready yet');
-            return;
-        }
-        
-        const svg = document.querySelector('.qr-code-display svg');
-        if (!svg) {
-            alert('QR code not found');
-            return;
-        }
-        
-        // Clone and modify SVG for high quality export
-        const svgClone = svg.cloneNode(true);
-        svgClone.setAttribute('width', '1024');
-        svgClone.setAttribute('height', '1024');
-        
-        const svgData = new XMLSerializer().serializeToString(svgClone);
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = 1024;
-        canvas.height = 1024;
-        
-        const img = new Image();
-        img.onload = () => {
-            // White background
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, 1024, 1024);
-            // Draw QR code
-            ctx.drawImage(img, 0, 0, 1024, 1024);
-            
-            // Download
-            canvas.toBlob((blob) => {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.download = `${session.course?.code || 'session'}-qr-code.png`;
-                link.href = url;
-                link.click();
-                URL.revokeObjectURL(url);
-            }, 'image/png');
-        };
-        
-        img.onerror = () => {
-            alert('Failed to generate QR code image');
-        };
-        
-        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
-    };
 
-    const shareSession = async () => {
-        if (!qrData) {
-            alert('QR code is not ready yet');
-            return;
-        }
-
-        const shareData = {
-            title: `${session.course?.code} - ${session.sessionName}`,
-            text: `Join the attendance session for ${session.course?.name}`,
-            url: qrData
-        };
-
-        if (navigator.share) {
-            try {
-                await navigator.share(shareData);
-            } catch (error) {
-                if (error.name !== 'AbortError') {
-                    // Fallback to copying link
-                    copyToClipboard();
-                }
-            }
-        } else {
-            // Fallback for browsers without Web Share API
-            copyToClipboard();
-        }
-    };
-
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText(qrData).then(() => {
-            alert('Session link copied to clipboard!');
-        }).catch(() => {
-            // Fallback for older browsers
-            const textarea = document.createElement('textarea');
-            textarea.value = qrData;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            alert('Session link copied to clipboard!');
-        });
-    };
 
     if (loading) {
         return (
@@ -218,29 +146,18 @@ const QRCodeSession = () => {
                     <div className="qr-countdown-card">
                         <p className="qr-countdown-label">Session closes in</p>
                         <p className="qr-countdown-time">{formatTime(countdown)}</p>
+                        <p style={{ fontSize: '12px', color: '#10b981', marginTop: '8px', fontWeight: '500' }}>
+                            🔄 QR code rotates every 30 seconds
+                        </p>
+                        <p style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
+                            Refreshed {qrRefreshCount} times
+                        </p>
                     </div>
-                </div>
-
-                <div className="qr-actions">
-                    <button 
-                        onClick={downloadQR}
-                        className="qr-action-button primary"
-                    >
-                        <Download size={20} />
-                        Download QR
-                    </button>
-                    <button 
-                        onClick={shareSession}
-                        className="qr-action-button secondary"
-                    >
-                        <Share2 size={20} />
-                        Share Session
-                    </button>
                 </div>
 
                 <div className="qr-session-footer">
                     <p>
-                        Students can scan this QR code to mark their attendance.
+                        Students can scan this QR code to mark their attendance. The QR code changes every 30 seconds for security.
                     </p>
                 </div>
             </div>

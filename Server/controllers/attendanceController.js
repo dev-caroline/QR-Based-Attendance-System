@@ -1,6 +1,7 @@
 const Attendance = require('../models/Attendance');
 const Session = require('../models/Session');
 const Course = require('../models/Course');
+const { validateTimeToken } = require('./sessionController');
 
 exports.getAttendanceRecords = async (req, res) => {
     try {
@@ -65,6 +66,14 @@ exports.markAttendance = async (req, res) => {
 
         // Get device info from user agent
         const deviceInfo = req.headers['user-agent'] || 'Unknown device';
+
+        // Validate rotating token
+        if (!token || !validateTimeToken(sessionId, token)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid or expired QR code. Please scan the latest QR code.'
+            });
+        }
 
         // Find session
         const session = await Session.findById(sessionId);
