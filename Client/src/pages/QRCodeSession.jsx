@@ -74,27 +74,78 @@ const QRCodeSession = () => {
     };
 
     const downloadQR = () => {
-        const svg = document.querySelector('.qr-code-display svg');
-        if (!svg) return;
+        if (!qrData) return;
         
-        const svgData = new XMLSerializer().serializeToString(svg);
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
-
-        canvas.width = 320;
-        canvas.height = 320;
-
-        img.onload = () => {
-            ctx.drawImage(img, 0, 0);
-            const url = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.download = `${session.course?.code || 'session'}-qr-code.png`;
-            link.href = url;
-            link.click();
-        };
-
-        img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+        // Create a temporary container for generating high-quality QR code
+        const container = document.createElement('div');
+        container.style.position = 'absolute';
+        container.style.left = '-9999px';
+        document.body.appendChild(container);
+        
+        // Import QRCode.react to generate a fresh SVG
+        import('react-dom/client').then((ReactDOM) => {
+            import('react-qr-code').then((QRCodeModule) => {
+                const QRCodeComponent = QRCodeModule.default;
+                
+                // Create a root and render the QR code
+                const root = ReactDOM.createRoot(container);
+                root.render(
+                    QRCodeComponent({ value: qrData, size: 512, level: 'H' })
+                );
+                
+                // Wait for render to complete
+                setTimeout(() => {
+                    const svg = container.querySelector('svg');
+                    if (!svg) {
+                        alert('Failed to generate QR code');
+                        document.body.removeChild(container);
+                        return;
+                    }
+                    
+                    // Set proper dimensions
+                    svg.setAttribute('width', '512');
+                    svg.setAttribute('height', '512');
+                    
+                    const svgData = new XMLSerializer().serializeToString(svg);
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    canvas.width = 512;
+                    canvas.height = 512;
+                    
+                    const img = new Image();
+                    img.onload = () => {
+                        // Draw white background first
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(0, 0, 512, 512);
+                        // Draw QR code
+                        ctx.drawImage(img, 0, 0, 512, 512);
+                        
+                        const url = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.download = `${session.course?.code || 'session'}-qr-code.png`;
+                        link.href = url;
+                        link.click();
+                        
+                        // Cleanup
+                        root.unmount();
+                        document.body.removeChild(container);
+                    };
+                    
+                    img.onerror = () => {
+                        alert('Failed to generate QR code image');
+                        root.unmount();
+                        document.body.removeChild(container);
+                    };
+                    
+                    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+                }, 100);
+            });
+        }).catch(error => {
+            console.error('Failed to generate QR code:', error);
+            alert('Failed to generate QR code for download');
+            document.body.removeChild(container);
+        });
     };
 
     if (loading) {
